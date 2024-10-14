@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 function Welcome() {
   const [tab, setTab] = useState(1);
   const [type, setType] = useState(1);
+  const [index, setIndex] = useState(0);
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
   const [file3, setFile3] = useState(null);
@@ -80,6 +81,12 @@ function Welcome() {
     if (!response.error) {
       showAlert(alert, response.message, { timeout: 3000 });
       reset();
+      setFile1(null);
+      setFile2(null);
+      setFile3(null);
+      setFile4(null);
+      setFile5(null);
+      setFile6(null);
     } else {
       showAlert(alert, response.message, { timeout: 3000 });
     }
@@ -101,6 +108,50 @@ function Welcome() {
     select: (data) => data.results.data,
   });
 
+  const getEditData = (index) => {
+    setTab(1);
+
+    let defaultValue = {};
+    if (results?.length) {
+      defaultValue.aadhar = results[index].aadhar;
+      defaultValue.pan_card = results[index].pan_card;
+      defaultValue.bank_name = results[index].bank_name;
+      defaultValue.dob = results[index].dob;
+      defaultValue.doj = results[index].doj;
+      defaultValue.gender = results[index].gender;
+      defaultValue.address = results[index].address;
+      defaultValue.phone_number = results[index].phone_number;
+      defaultValue.esi_number = results[index].esi_number;
+      defaultValue.pf_number = results[index].pf_number;
+      defaultValue.account_number = results[index].account_number;
+      defaultValue.ifsc_code = results[index].ifsc_code;
+      defaultValue.employee_name = results[index].employee_name;
+      defaultValue.father_or_husband_name =
+        results[index].father_or_husband_name;
+      defaultValue.zone = results[index].zone;
+      defaultValue.department = results[index].department;
+      defaultValue.address_line2 = results[index].address_line2;
+      defaultValue.address_line3 = results[index].address_line3;
+      defaultValue.ward = results[index].ward;
+      defaultValue.ps = results[index].ps;
+      defaultValue.position = results[index].position;
+
+      defaultValue.reporting_officer = results[index].reporting_officer;
+      defaultValue.basic_salary = results[index].basic_salary;
+      defaultValue.epf = results[index].epf;
+      defaultValue.salary_disburasable = results[index].salary_disburasable;
+
+      defaultValue.registration_fees = results[index].registration_fees;
+      reset({ ...defaultValue });
+
+      setFile1(results[index].photo);
+      setFile2(results[index].aadhar_front);
+      setFile2(results[index].aadhar_back);
+      setFile2(results[index].passbook);
+      setFile2(results[index].pan_photo);
+      setFile2(results[index].driving_license);
+    }
+  };
   console.log(results);
   return (
     <>
@@ -1013,6 +1064,9 @@ function Welcome() {
                                           <Link
                                             to=""
                                             className="Table_btn me-2"
+                                            onClick={() => {
+                                              getEditData(index);
+                                            }}
                                           >
                                             <i className="fa fa-edit" />
                                           </Link>
