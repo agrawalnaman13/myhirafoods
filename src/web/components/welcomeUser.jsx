@@ -90,6 +90,7 @@ function Welcome() {
 
       if (results?.length) {
         refetch();
+        window.location.reload();
       } else {
         reset();
         setFile1(null);
@@ -108,9 +109,9 @@ function Welcome() {
     queryKey: ["UsersList", search],
     queryFn: async () => {
       const formData = {
-        account_number: type === 2 ? search : "",
-        phone_number: type === 1 ? search : "",
-        employee_name: type === 3 ? search : "",
+        account_number: type === 3 ? search : "",
+        phone_number: type === 2 ? search : "",
+        employee_name: type === 1 ? search : "",
       };
       return searchAll(formData);
     },
@@ -1043,16 +1044,25 @@ function Welcome() {
                       <div className="form-group mb-0">
                         <label>Search User</label>
                       </div>
-
                       <div className="d-flex">
+                        <div className="form-group">
+                          <input
+                            type="radio"
+                            id="employeeName"
+                            name="option"
+                            defaultChecked={type === 1 ? true : false}
+                            className="me-1"
+                            onChange={() => setType(1)}
+                          />
+                          <label htmlFor="employeeName">Employee Name</label>
+                        </div>
                         <div className="form-group me-3">
                           <input
                             type="radio"
                             id="mobileNumber"
                             name="option"
-                            defaultChecked={type === 1 ? true : false}
                             className="me-1"
-                            onChange={() => setType(1)}
+                            onChange={() => setType(2)}
                           />
                           <label htmlFor="mobileNumber">Mobile Number</label>
                         </div>
@@ -1064,21 +1074,9 @@ function Welcome() {
                             name="option"
                             defaultValue="accountNumber"
                             className="me-1"
-                            onChange={() => setType(2)}
-                          />
-                          <label htmlFor="accountNumber">Account Number</label>
-                        </div>
-
-                        <div className="form-group">
-                          <input
-                            type="radio"
-                            id="employeeName"
-                            name="option"
-                            defaultValue="employeeName"
-                            className="me-1"
                             onChange={() => setType(3)}
                           />
-                          <label htmlFor="employeeName">Employee Name</label>
+                          <label htmlFor="accountNumber">Account Number</label>
                         </div>
                       </div>
 
