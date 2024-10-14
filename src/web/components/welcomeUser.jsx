@@ -1091,7 +1091,7 @@ function Welcome() {
                                     <th>S.No.</th>
                                     <th>Employee Name</th>
                                     <th>Mobile</th>
-                                    <th>AC Number</th>
+                                    <th>Account Number</th>
                                     <th>Position</th>
                                     <th>Zone</th>
                                     <th>Action</th>
