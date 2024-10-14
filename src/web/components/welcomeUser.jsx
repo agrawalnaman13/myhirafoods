@@ -70,14 +70,16 @@ function Welcome() {
   };
 
   const onSubmit = async (data) => {
-    const files = await imageUpload();
-    files.reverse();
-    if (file1) data.photo = files.pop();
-    if (file2) data.aadhar_front = files.pop();
-    if (file3) data.aadhar_back = files.pop();
-    if (file4) data.pan_photo = files.pop();
-    if (file5) data.passbook = files.pop();
-    if (file6) data.driving_license = files.pop();
+    if (file1 || file2 || file3 || file4 || file5 || file6) {
+      const files = await imageUpload();
+      files.reverse();
+      if (file1) data.photo = files.pop();
+      if (file2) data.aadhar_front = files.pop();
+      if (file3) data.aadhar_back = files.pop();
+      if (file4) data.pan_photo = files.pop();
+      if (file5) data.passbook = files.pop();
+      if (file6) data.driving_license = files.pop();
+    }
     if (results?.length) {
       data._id = results[index]?._id;
     }
@@ -146,12 +148,11 @@ function Welcome() {
       defaultValue.ward = results[index]?.ward;
       defaultValue.ps = results[index]?.ps;
       defaultValue.position = results[index]?.position;
-
       defaultValue.reporting_officer = results[index]?.reporting_officer;
       defaultValue.basic_salary = results[index]?.basic_salary;
       defaultValue.epf = results[index]?.epf;
       defaultValue.salary_disburasable = results[index]?.salary_disburasable;
-
+      defaultValue.registration_charges = results[index]?.registration_charges;
       defaultValue.registration_fees = results[index]?.registration_fees;
       reset({ ...defaultValue });
     }
@@ -197,7 +198,7 @@ function Welcome() {
                     </label>
                     <label
                       className={
-                        tab === 2 ? " tab nav-item active" : " tab nav-item "
+                        tab === 2 ? " tab nav-item active" : " tab nav-item"
                       }
                       onClick={() => setTab(2)}
                     >
@@ -318,14 +319,14 @@ function Welcome() {
                             <input
                               type="text"
                               className="form-control"
-                              name="address_line1"
-                              id="address_line1"
-                              {...register("address_line1", {
+                              name="address"
+                              id="address"
+                              {...register("address", {
                                 required: false,
                               })}
                             />
-                            {errors.address_line1 &&
-                              errors.address_line1.type === "required" && (
+                            {errors.address &&
+                              errors.address.type === "required" && (
                                 <p className="form-error">
                                   This field is required
                                 </p>
