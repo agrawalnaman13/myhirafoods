@@ -4,7 +4,7 @@
 
 body,
 html {
-  overflow: hidden;
+  overflow-y: auto;
   background-color: #f2f2f2;
   font-family: "Poppins";
 }
@@ -445,7 +445,7 @@ h6 {
 
 .admin_main {
   display: flex;
-  height: 100vh;
+  height: auto;
   overflow-y: scroll;
 }
 
@@ -628,7 +628,7 @@ h6 {
   justify-content: center;
   width: 24px;
   margin: 0 0px;
-  border: 1px solid #f2894f;
+  border: 1px solid #3584a7;
   border-radius: 50px;
   font-size: 10px;
   background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
