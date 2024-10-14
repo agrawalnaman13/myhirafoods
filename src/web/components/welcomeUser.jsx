@@ -63,13 +63,14 @@ function Welcome() {
 
   const onSubmit = async (data) => {
     const files = await imageUpload();
-
-    if (file1) data.photo = files[0];
-    if (file2) data.aadhar_front = files[1];
-    if (file3) data.aadhar_back = files[2];
-    if (file4) data.pan_photo = files[3];
-    if (file5) data.passbook = files[4];
-    if (file6) data.driving_license = files[5];
+    files.reverse();
+    if (file1) data.photo = files.pop();
+    if (file2) data.aadhar_front = files.pop();
+    if (file3) data.aadhar_back = files.pop();
+    if (file4) data.pan_photo = files.pop();
+    if (file5) data.passbook = files.pop();
+    if (file6) data.driving_license = files.pop();
+    console.log(data);
     const response = await userData(data);
     if (!response.error) {
       showAlert(alert, response.message, { timeout: 3000 });
