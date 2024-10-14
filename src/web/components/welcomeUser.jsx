@@ -3,6 +3,7 @@ import Header from "./commonComponent/header";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import {
+  deleteData,
   searchAll,
   uploadImages,
   userData,
@@ -70,13 +71,14 @@ function Welcome() {
 
   const onSubmit = async (data) => {
     const files = await imageUpload();
-
-    if (file1) data.photo = files[0];
-    if (file2) data.aadhar_front = files[1];
-    if (file3) data.aadhar_back = files[2];
-    if (file4) data.pan_photo = files[3];
-    if (file5) data.passbook = files[4];
-    if (file6) data.driving_license = files[5];
+    files.reverse();
+    if (file1) data.photo = files.pop();
+    if (file2) data.aadhar_front = files.pop();
+    if (file3) data.aadhar_back = files.pop();
+    if (file4) data.pan_photo = files.pop();
+    if (file5) data.passbook = files.pop();
+    if (file6) data.driving_license = files.pop();
+    console.log(data);
     const response = await userData(data);
     if (!response.error) {
       showAlert(alert, response.message, { timeout: 3000 });
@@ -152,6 +154,15 @@ function Welcome() {
       setFile2(results[index].driving_license);
     }
   };
+  const deleteEmp = async (id) => {
+    const response = await deleteData(id);
+    if (!response.error) {
+      showAlert(alert, response.message, { timeout: 3000 });
+    } else {
+      showAlert(alert, response.message, { timeout: 3000 });
+    }
+  };
+
   console.log(results);
   return (
     <>
@@ -1044,7 +1055,7 @@ function Welcome() {
                                     <th>Employee Name</th>
                                     <th>Mobile</th>
                                     <th>AC Number</th>
-                                    <th>Department</th>
+                                    <th>Position</th>
                                     <th>Zone</th>
                                     <th>Action</th>
                                   </tr>
@@ -1056,9 +1067,8 @@ function Welcome() {
                                       <td>{user.employee_name}</td>
                                       <td>{user.phone_number}</td>
                                       <td>{user.account_number}</td>
-                                      <td>{user.department}</td>
-                                      <td>{user.Zone}</td>
-
+                                      <td>{user.position}</td>
+                                      <td>{user.zone}</td>
                                       <td>
                                         <div className="d-flex">
                                           <Link
@@ -1073,7 +1083,7 @@ function Welcome() {
                                           <Link
                                             to=""
                                             className="Table_btn"
-                                            // onClick={() => setDelId(user._id)}
+                                            onClick={() => deleteEmp(user._id)}
                                             data-bs-toggle="modal"
                                             data-bs-target="#popUp2"
                                           >

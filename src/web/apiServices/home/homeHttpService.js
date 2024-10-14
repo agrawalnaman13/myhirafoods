@@ -55,3 +55,16 @@ export async function searchAll(formData) {
     alert(error.message);
   }
 }
+
+export async function deleteData(id) {
+  try {
+    const { data } = await webHttpService.delete(
+      `${process.env.REACT_APP_APIENDPOINT}/user/deleteData/${id}`
+    );
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    alert(error.message);
+  }
+}
