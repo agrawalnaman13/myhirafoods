@@ -139,6 +139,7 @@ function Welcome() {
       defaultValue.account_number = results[index]?.account_number;
       defaultValue.ifsc_code = results[index]?.ifsc_code;
       defaultValue.employee_name = results[index]?.employee_name;
+      defaultValue.employee_id = results[index]?.employee_id;
       defaultValue.father_or_husband_name =
         results[index]?.father_or_husband_name;
       defaultValue.zone = results[index]?.zone;
