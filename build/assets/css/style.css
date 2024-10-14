@@ -4,7 +4,7 @@
 
 body,
 html {
-  overflow: hidden;
+  overflow-y: auto;
   background-color: #f2f2f2;
   font-family: "Poppins";
 }
@@ -225,7 +225,7 @@ h6 {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #000000e0;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   height: 100%;
   width: 100%;
 }
@@ -324,7 +324,7 @@ h6 {
   border-radius: 4px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
   border: 0;
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   font-weight: 500;
 }
 
@@ -356,7 +356,7 @@ h6 {
 }
 
 .comman_btn {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff !important;
   font-size: 15px;
   width: 100%;
@@ -424,7 +424,7 @@ h6 {
 .admin_header {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   z-index: 9;
   position: relative;
 }
@@ -434,7 +434,7 @@ h6 {
 }
 
 .act_btn {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff !important;
   font-size: 14px;
   font-weight: 600;
@@ -445,6 +445,8 @@ h6 {
 
 .admin_main {
   display: flex;
+  height: auto;
+  overflow-y: scroll;
 }
 
 .admin_siderbarr {
@@ -482,7 +484,7 @@ h6 {
 }
 
 .admin_siderbarr a.active {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
 }
 
@@ -498,8 +500,6 @@ h6 {
 .admin_contentpart {
   width: 80%;
   padding: 25px 25px;
-  overflow-y: scroll;
-  height: calc(100vh - 55px);
 }
 
 .comman_design {
@@ -607,13 +607,13 @@ h6 {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   border-radius: 20px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .table-hover > tbody > tr:hover > * {
@@ -628,10 +628,10 @@ h6 {
   justify-content: center;
   width: 24px;
   margin: 0 0px;
-  border: 1px solid #f2894f;
+  border: 1px solid #3584a7;
   border-radius: 50px;
   font-size: 10px;
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
 }
 
@@ -743,7 +743,7 @@ h6 {
 }
 
 .check_toggle input:checked ~ label::after {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .userdetails {
@@ -808,7 +808,7 @@ h6 {
 }
 
 .edit_btn {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff !important;
   font-size: 13px;
   padding: 8px 14px;
@@ -997,7 +997,7 @@ h6 {
 }
 
 .back_btn {
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff !important;
   display: flex;
   border-radius: 4px;
@@ -1279,7 +1279,7 @@ h6 {
   border-radius: 12px;
   padding: 16px 16px;
   box-shadow: 0px 10px 35px 0px rgba(87, 92, 138, 0.06);
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   position: relative;
   overflow: hidden;
   display: block;
@@ -1314,7 +1314,7 @@ h6 {
 }
 
 .staticss_box1 {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .toggle_btns {
@@ -1366,7 +1366,7 @@ h6 {
 }
 
 .comman_tabs .nav-link.active {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
 }
 
@@ -1406,7 +1406,7 @@ h6 {
 }
 
 .addpart_btn a {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
   font-size: 12px;
   padding: 10px 14px;
@@ -1544,7 +1544,7 @@ h6 {
 }
 
 .comman_tabs .comman_inner_tabs .nav-link.active {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .comman_tabs .comman_inner_tabs .nav-tabs {
@@ -1927,7 +1927,7 @@ h6 {
 }
 
 .flag-lists_in.active a {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
   border-color: #f2894f;
 }
@@ -2318,14 +2318,14 @@ h6 {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
   left: 0;
 }
 
 .img-wrap {
   position: relative;
-  width: 200px;
+  width: 100%;
   height: 200px;
   overflow: hidden;
   border-radius: 12px;
@@ -2342,13 +2342,12 @@ h6 {
   border-radius: 12px;
   display: inline-block;
   position: relative;
-  width: 200px;
   height: 200px;
   display: grid;
   place-items: center;
   padding: 20px;
   cursor: pointer;
-  background: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
   font-size: 18px;
   transition: background 0.3s ease;
@@ -2503,7 +2502,7 @@ ul {
 
 .select-dropdown__list:hover,
 .select-dropdown__list a:hover {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   color: #fff;
 }
 
@@ -2725,7 +2724,7 @@ ul {
 }
 
 .form-check-input:checked {
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
   border-color: #f2894f;
 }
 
@@ -2748,20 +2747,20 @@ ul {
   padding: 12px 15px;
   border-radius: 50px;
   cursor: pointer;
-  color: #f2894f;
+  color: #3584a7;
   font-size: 14px;
-  border: 1px solid #f2894f;
+  border: 1px solid #3584a7;
   transition: all 0.6s ease-in-out;
 }
 
 .common_tabs .nav-item:hover {
   color: #ffffff;
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .common_tabs .nav-item.active {
   color: #ffffff;
-  background-color: #f2894f;
+  background: linear-gradient(-225deg, #473b7b 0%, #3584a7 51%, #30d2be 100%);
 }
 
 .limit-text {
