@@ -79,19 +79,24 @@ function Welcome() {
     if (file5) data.passbook = files.pop();
     if (file6) data.driving_license = files.pop();
     if (results?.length) {
-      data._id = results[index]._id;
+      data._id = results[index]?._id;
     }
     console.log(data);
     const response = await userData(data);
     if (!response.error) {
       showAlert(alert, response.message, { timeout: 3000 });
-      reset();
-      setFile1(null);
-      setFile2(null);
-      setFile3(null);
-      setFile4(null);
-      setFile5(null);
-      setFile6(null);
+
+      if (results?.length) {
+        refetch();
+      } else {
+        reset();
+        setFile1(null);
+        setFile2(null);
+        setFile3(null);
+        setFile4(null);
+        setFile5(null);
+        setFile6(null);
+      }
     } else {
       showAlert(alert, response.message, { timeout: 3000 });
     }
@@ -119,35 +124,35 @@ function Welcome() {
 
     let defaultValue = {};
     if (results?.length) {
-      defaultValue.aadhar = results[index].aadhar;
-      defaultValue.pan_card = results[index].pan_card;
-      defaultValue.bank_name = results[index].bank_name;
-      defaultValue.dob = results[index].dob;
-      defaultValue.doj = results[index].doj;
-      defaultValue.gender = results[index].gender;
-      defaultValue.address = results[index].address;
-      defaultValue.phone_number = results[index].phone_number;
-      defaultValue.esi_number = results[index].esi_number;
-      defaultValue.pf_number = results[index].pf_number;
-      defaultValue.account_number = results[index].account_number;
-      defaultValue.ifsc_code = results[index].ifsc_code;
-      defaultValue.employee_name = results[index].employee_name;
+      defaultValue.aadhar = results[index]?.aadhar;
+      defaultValue.pan_card = results[index]?.pan_card;
+      defaultValue.bank_name = results[index]?.bank_name;
+      defaultValue.dob = results[index]?.dob;
+      defaultValue.doj = results[index]?.doj;
+      defaultValue.gender = results[index]?.gender;
+      defaultValue.address = results[index]?.address;
+      defaultValue.phone_number = results[index]?.phone_number;
+      defaultValue.esi_number = results[index]?.esi_number;
+      defaultValue.pf_number = results[index]?.pf_number;
+      defaultValue.account_number = results[index]?.account_number;
+      defaultValue.ifsc_code = results[index]?.ifsc_code;
+      defaultValue.employee_name = results[index]?.employee_name;
       defaultValue.father_or_husband_name =
-        results[index].father_or_husband_name;
-      defaultValue.zone = results[index].zone;
-      defaultValue.department = results[index].department;
-      defaultValue.address_line2 = results[index].address_line2;
-      defaultValue.address_line3 = results[index].address_line3;
-      defaultValue.ward = results[index].ward;
-      defaultValue.ps = results[index].ps;
-      defaultValue.position = results[index].position;
+        results[index]?.father_or_husband_name;
+      defaultValue.zone = results[index]?.zone;
+      defaultValue.department = results[index]?.department;
+      defaultValue.address_line2 = results[index]?.address_line2;
+      defaultValue.address_line3 = results[index]?.address_line3;
+      defaultValue.ward = results[index]?.ward;
+      defaultValue.ps = results[index]?.ps;
+      defaultValue.position = results[index]?.position;
 
-      defaultValue.reporting_officer = results[index].reporting_officer;
-      defaultValue.basic_salary = results[index].basic_salary;
-      defaultValue.epf = results[index].epf;
-      defaultValue.salary_disburasable = results[index].salary_disburasable;
+      defaultValue.reporting_officer = results[index]?.reporting_officer;
+      defaultValue.basic_salary = results[index]?.basic_salary;
+      defaultValue.epf = results[index]?.epf;
+      defaultValue.salary_disburasable = results[index]?.salary_disburasable;
 
-      defaultValue.registration_fees = results[index].registration_fees;
+      defaultValue.registration_fees = results[index]?.registration_fees;
       reset({ ...defaultValue });
     }
   };
@@ -429,7 +434,7 @@ function Welcome() {
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label>DOB </label>
+                            <label>DOB (DD/MM/YYYY) </label>
                             <input
                               type="text"
                               className="form-control"
@@ -449,7 +454,7 @@ function Welcome() {
 
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label>DOJ </label>
+                            <label>DOJ (DD/MM/YYYY) </label>
                             <input
                               type="text"
                               className="form-control"
@@ -633,7 +638,7 @@ function Welcome() {
                           <div className="form-group">
                             <label>Salary Disbursable </label>
                             <input
-                              type="text"
+                              type="number"
                               className="form-control"
                               name="salary_disburasable"
                               id="salary_disburasable"
@@ -697,7 +702,7 @@ function Welcome() {
                           <div className="form-group">
                             <label>IFSC Code </label>
                             <input
-                              type="number"
+                              type="text"
                               className="form-control"
                               name="ifsc_code"
                               id="ifsc_code"
@@ -739,7 +744,7 @@ function Welcome() {
                           <div className="form-group">
                             <label>Pan Card</label>
                             <input
-                              type="number"
+                              type="text"
                               className="form-control"
                               name="pan_card"
                               id="pan_card"
@@ -803,12 +808,13 @@ function Welcome() {
                           <div className="form-group">
                             <label>Photo Graph </label>
                           </div>
-                          {file1 || results?.length ? (
+                          {file1 ||
+                          (results?.length && results[index]?.photo) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].photo
+                                    ? results[index]?.photo
                                     : file1
                                     ? URL.createObjectURL(file1)
                                     : ""
@@ -839,12 +845,13 @@ function Welcome() {
                           <div className="form-group">
                             <label>Aadhar Front </label>
                           </div>
-                          {file2 || results?.length ? (
+                          {file2 ||
+                          (results?.length && results[index]?.aadhar_front) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].aadhar_front
+                                    ? results[index]?.aadhar_front
                                     : file2
                                     ? URL.createObjectURL(file2)
                                     : ""
@@ -875,12 +882,13 @@ function Welcome() {
                           <div className="form-group">
                             <label>Aadhar Back</label>
                           </div>
-                          {file3 || results?.length ? (
+                          {file3 ||
+                          (results?.length && results[index]?.aadhar_back) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].aadhar_back
+                                    ? results[index]?.aadhar_back
                                     : file3
                                     ? URL.createObjectURL(file3)
                                     : ""
@@ -911,12 +919,13 @@ function Welcome() {
                           <div className="form-group">
                             <label>Pan Card </label>
                           </div>
-                          {file4 || results?.length ? (
+                          {file4 ||
+                          (results?.length && results[index]?.pan_photo) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].pan_photo
+                                    ? results[index]?.pan_photo
                                     : file4
                                     ? URL.createObjectURL(file4)
                                     : ""
@@ -947,12 +956,13 @@ function Welcome() {
                           <div className="form-group">
                             <label>Passbook </label>
                           </div>
-                          {file5 || results?.length ? (
+                          {file5 ||
+                          (results?.length && results[index]?.passbook) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].passbook
+                                    ? results[index]?.passbook
                                     : file5
                                     ? URL.createObjectURL(file5)
                                     : ""
@@ -983,12 +993,14 @@ function Welcome() {
                           <div className="form-group">
                             <label>Driving License </label>
                           </div>
-                          {file6 || results?.length ? (
+                          {file6 ||
+                          (results?.length &&
+                            results[index]?.driving_license) ? (
                             <div className="img-wrap">
                               <img
                                 src={
                                   results?.length
-                                    ? results[index].driving_license
+                                    ? results[index]?.driving_license
                                     : file6
                                     ? URL.createObjectURL(file6)
                                     : ""
