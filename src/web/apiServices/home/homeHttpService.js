@@ -41,3 +41,17 @@ export async function uploadImages(formData) {
     alert(error.message);
   }
 }
+
+export async function searchAll(formData) {
+  try {
+    const { data } = await webHttpService.post(
+      `${process.env.REACT_APP_APIENDPOINT}/user/searchAll`,
+      formData
+    );
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    alert(error.message);
+  }
+}

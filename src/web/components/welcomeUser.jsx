@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import Header from "./commonComponent/header";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
-import { uploadImages, userData } from "../apiServices/home/homeHttpService";
+import {
+  searchAll,
+  uploadImages,
+  userData,
+} from "../apiServices/home/homeHttpService";
 import { showAlert } from "./commonComponent/alertManager";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 function Welcome() {
   const [tab, setTab] = useState(1);
+  const [type, setType] = useState(1);
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
   const [file3, setFile3] = useState(null);
@@ -78,6 +84,24 @@ function Welcome() {
       showAlert(alert, response.message, { timeout: 3000 });
     }
   };
+
+  const { data: results } = useQuery({
+    queryKey: ["UsersList", search],
+    queryFn: async () => {
+      const formData = {
+        account_number: type === 2 ? search : "",
+        phone_number: type === 1 ? search : "",
+        employee_name: type === 3 ? search : "",
+      };
+      return searchAll(formData);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    select: (data) => data.results.data,
+  });
+
+  console.log(results);
   return (
     <>
       <Header />
@@ -915,6 +939,7 @@ function Welcome() {
                             name="option"
                             defaultValue="mobileNumber"
                             className="me-1"
+                            onChange={() => setType(1)}
                           />
                           <label htmlFor="mobileNumber">Mobile Number</label>
                         </div>
@@ -926,6 +951,7 @@ function Welcome() {
                             name="option"
                             defaultValue="accountNumber"
                             className="me-1"
+                            onChange={() => setType(2)}
                           />
                           <label htmlFor="accountNumber">Account Number</label>
                         </div>
@@ -937,6 +963,7 @@ function Welcome() {
                             name="option"
                             defaultValue="employeeName"
                             className="me-1"
+                            onChange={() => setType(3)}
                           />
                           <label htmlFor="employeeName">Employee Name</label>
                         </div>
@@ -972,30 +999,36 @@ function Welcome() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>1</td>
-                                    <td>Jennifer Garcia</td>
-                                    <td>10/10/2024</td>
-                                    <td>100 ED</td>
-                                    <td>Apple Pay</td>
-                                    <td>Basic</td>
-                                    <td>
-                                      <div className="d-flex justify-content-center">
-                                        <Link
-                                          to="/admin/view-transaction"
-                                          className="Table_btn me-2"
-                                        >
-                                          <i className="fa fa-eye" />
-                                        </Link>
-                                        <a
-                                          href="javascript:;"
-                                          className="Table_btn"
-                                        >
-                                          <i className="fa fa-trash" />
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
+                                  {results?.map((user, index) => (
+                                    <tr key={user._id}>
+                                      <td>{index + 1}</td>
+                                      <td>{user.employee_name}</td>
+                                      <td>{user.phone_number}</td>
+                                      <td>{user.account_number}</td>
+                                      <td>{user.department}</td>
+                                      <td>{user.Zone}</td>
+
+                                      <td>
+                                        <div className="d-flex">
+                                          <Link
+                                            to=""
+                                            className="Table_btn me-2"
+                                          >
+                                            <i className="fa fa-edit" />
+                                          </Link>
+                                          <Link
+                                            to=""
+                                            className="Table_btn"
+                                            // onClick={() => setDelId(user._id)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#popUp2"
+                                          >
+                                            <i className="fa fa-trash" />
+                                          </Link>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
                                 </tbody>
                               </table>
                             </div>
