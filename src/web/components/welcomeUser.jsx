@@ -3,6 +3,7 @@ import Header from "./commonComponent/header";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import {
+  deleteData,
   searchAll,
   uploadImages,
   userData,
@@ -101,6 +102,15 @@ function Welcome() {
     },
     select: (data) => data.results.data,
   });
+
+  const deleteEmp = async (id) => {
+    const response = await deleteData(id);
+    if (!response.error) {
+      showAlert(alert, response.message, { timeout: 3000 });
+    } else {
+      showAlert(alert, response.message, { timeout: 3000 });
+    }
+  };
 
   console.log(results);
   return (
@@ -994,7 +1004,7 @@ function Welcome() {
                                     <th>Employee Name</th>
                                     <th>Mobile</th>
                                     <th>AC Number</th>
-                                    <th>Department</th>
+                                    <th>Position</th>
                                     <th>Zone</th>
                                     <th>Action</th>
                                   </tr>
@@ -1006,9 +1016,8 @@ function Welcome() {
                                       <td>{user.employee_name}</td>
                                       <td>{user.phone_number}</td>
                                       <td>{user.account_number}</td>
-                                      <td>{user.department}</td>
-                                      <td>{user.Zone}</td>
-
+                                      <td>{user.position}</td>
+                                      <td>{user.zone}</td>
                                       <td>
                                         <div className="d-flex">
                                           <Link
@@ -1020,7 +1029,7 @@ function Welcome() {
                                           <Link
                                             to=""
                                             className="Table_btn"
-                                            // onClick={() => setDelId(user._id)}
+                                            onClick={() => deleteEmp(user._id)}
                                             data-bs-toggle="modal"
                                             data-bs-target="#popUp2"
                                           >
