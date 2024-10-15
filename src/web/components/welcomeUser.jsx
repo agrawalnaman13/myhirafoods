@@ -876,34 +876,46 @@ function Welcome() {
                           </div>
                         </div>
                         <div className="col-md-6"></div>
-                        <p className="form-error">Files Must be Upto 300KB Max</p>
+                        <p className="form-error">
+                          Files Must be Upto 300KB Max
+                        </p>
                         <div className="col-md-6 mb-3">
                           <div className="form-group">
                             <label>Photo Graph </label>
                           </div>
                           {file1 ||
                           (results?.length && results[index]?.photo) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file1
-                                    ? URL.createObjectURL(file1)
-                                    : results?.length
-                                    ? results[index]?.photo
-                                    : ""
-                                }
-                                onClick={() =>
-                                  openImage(
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
                                     file1
                                       ? URL.createObjectURL(file1)
                                       : results?.length
                                       ? results[index]?.photo
                                       : ""
-                                  )
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                                  }
+                                  onClick={() =>
+                                    openImage(
+                                      file1
+                                        ? URL.createObjectURL(file1)
+                                        : results?.length
+                                        ? results[index]?.photo
+                                        : ""
+                                    )
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="photo"
@@ -929,27 +941,37 @@ function Welcome() {
                           </div>
                           {file2 ||
                           (results?.length && results[index]?.aadhar_front) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file2
-                                    ? URL.createObjectURL(file2)
-                                    : results?.length
-                                    ? results[index]?.aadhar_front
-                                    : ""
-                                }
-                                onClick={() =>
-                                  openImage(
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
                                     file2
                                       ? URL.createObjectURL(file2)
                                       : results?.length
                                       ? results[index]?.aadhar_front
                                       : ""
-                                  )
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                                  }
+                                  onClick={() =>
+                                    openImage(
+                                      file2
+                                        ? URL.createObjectURL(file2)
+                                        : results?.length
+                                        ? results[index]?.aadhar_front
+                                        : ""
+                                    )
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="aadhar_front"
@@ -975,27 +997,37 @@ function Welcome() {
                           </div>
                           {file3 ||
                           (results?.length && results[index]?.aadhar_back) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file3
-                                    ? URL.createObjectURL(file3)
-                                    : results?.length
-                                    ? results[index]?.aadhar_back
-                                    : ""
-                                }
-                                onClick={() =>
-                                  openImage(
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
                                     file3
                                       ? URL.createObjectURL(file3)
                                       : results?.length
                                       ? results[index]?.aadhar_back
                                       : ""
-                                  )
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                                  }
+                                  onClick={() =>
+                                    openImage(
+                                      file3
+                                        ? URL.createObjectURL(file3)
+                                        : results?.length
+                                        ? results[index]?.aadhar_back
+                                        : ""
+                                    )
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="aadhar_back"
@@ -1021,18 +1053,28 @@ function Welcome() {
                           </div>
                           {file4 ||
                           (results?.length && results[index]?.pan_photo) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file4
-                                    ? URL.createObjectURL(file4)
-                                    : results?.length
-                                    ? results[index]?.pan_photo
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
+                                    file4
+                                      ? URL.createObjectURL(file4)
+                                      : results?.length
+                                      ? results[index]?.pan_photo
+                                      : ""
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="pan_photo"
@@ -1058,27 +1100,37 @@ function Welcome() {
                           </div>
                           {file5 ||
                           (results?.length && results[index]?.passbook) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file5
-                                    ? URL.createObjectURL(file5)
-                                    : results?.length
-                                    ? results[index]?.passbook
-                                    : ""
-                                }
-                                onClick={() =>
-                                  openImage(
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
                                     file5
                                       ? URL.createObjectURL(file5)
                                       : results?.length
                                       ? results[index]?.passbook
                                       : ""
-                                  )
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                                  }
+                                  onClick={() =>
+                                    openImage(
+                                      file5
+                                        ? URL.createObjectURL(file5)
+                                        : results?.length
+                                        ? results[index]?.passbook
+                                        : ""
+                                    )
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="passbook"
@@ -1105,27 +1157,37 @@ function Welcome() {
                           {file6 ||
                           (results?.length &&
                             results[index]?.driving_license) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  file6
-                                    ? URL.createObjectURL(file6)
-                                    : results?.length
-                                    ? results[index]?.driving_license
-                                    : ""
-                                }
-                                onClick={() =>
-                                  openImage(
+                            <>
+                              <div className="img-wrap">
+                                <img
+                                  src={
                                     file6
                                       ? URL.createObjectURL(file6)
                                       : results?.length
                                       ? results[index]?.driving_license
                                       : ""
-                                  )
-                                }
-                                alt="Uploaded Image"
-                              />
-                            </div>
+                                  }
+                                  onClick={() =>
+                                    openImage(
+                                      file6
+                                        ? URL.createObjectURL(file6)
+                                        : results?.length
+                                        ? results[index]?.driving_license
+                                        : ""
+                                    )
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
+                              <label htmlFor="photo">
+                                Change <i className="fas fa-cloud-upload-alt" />
+                                <input
+                                  id="photo"
+                                  type="file"
+                                  onChange={(e) => handleImageUpload(e, 1)}
+                                />
+                              </label>
+                            </>
                           ) : (
                             <label
                               htmlFor="driving_license"
