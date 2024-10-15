@@ -857,8 +857,8 @@ function Welcome() {
                               className="form-control"
                               name="geo_location"
                               id="geo_location"
-                              value={`${coords?.latitude}, ${coords.longitude}`}
-                              disabled
+                              // value={`${coords?.latitude}, ${coords.longitude}`}
+                              // disabled
                               {...register("geo_location", {
                                 required: false,
                               })}
