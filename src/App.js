@@ -2,10 +2,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ScrollToTop from "./web/components/commonComponent/scrollToTop";
-import Welcome from "./web/components/welcomeUser";
 import ProtectedRoute from "./web/components/commonComponent/protectedRoutes";
 
 const Login = lazy(() => import("./web/components/login"));
+const Welcome = lazy(() => import("./web/components/welcomeUser"));
 
 const queryClient = new QueryClient({
   defaultOptions: {

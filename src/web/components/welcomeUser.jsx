@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React, { useEffect, useState } from "react";
 import Header from "./commonComponent/header";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
@@ -11,23 +12,28 @@ import {
 import { showAlert } from "./commonComponent/alertManager";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { RotatingLines } from "react-loader-spinner";
 
 function Welcome() {
   const [tab, setTab] = useState(1);
   const [type, setType] = useState(1);
   const [index, setIndex] = useState(0);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [coords, setCoords] = useState({});
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
   const [file3, setFile3] = useState(null);
   const [file4, setFile4] = useState(null);
   const [file5, setFile5] = useState(null);
   const [file6, setFile6] = useState(null);
-  const [search, setSearch] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -37,6 +43,16 @@ function Welcome() {
 
   const handleImageUpload = (event, type) => {
     const selectedFile = event.target.files[0];
+
+    if (selectedFile.size > 307200) {
+      showAlert(
+        alert,
+        "File exceeds the 300KB size limit. Please upload a smaller file.",
+        { timeout: 3000 }
+      );
+      return;
+    }
+
     if (type === 1) {
       setFile1(selectedFile);
     } else if (type === 2) {
@@ -70,6 +86,7 @@ function Welcome() {
   };
 
   const onSubmit = async (data) => {
+    setLoader(true);
     if (file1 || file2 || file3 || file4 || file5 || file6) {
       const files = await imageUpload();
       files.reverse();
@@ -83,14 +100,13 @@ function Welcome() {
     if (results?.length) {
       data._id = results[index]?._id;
     }
-    console.log(data);
+
     const response = await userData(data);
     if (!response.error) {
       showAlert(alert, response.message, { timeout: 3000 });
-
+      setLoader(false);
       if (results?.length) {
         refetch();
-        window.location.reload();
       } else {
         reset();
         setFile1(null);
@@ -101,11 +117,12 @@ function Welcome() {
         setFile6(null);
       }
     } else {
+      setLoader(false);
       showAlert(alert, response.message, { timeout: 3000 });
     }
   };
 
-  const { data: results, refetch } = useQuery({
+  const { data: details, refetch } = useQuery({
     queryKey: ["UsersList", search],
     queryFn: async () => {
       const formData = {
@@ -120,6 +137,12 @@ function Welcome() {
     },
     select: (data) => data.results.data,
   });
+
+  useEffect(() => {
+    if (details?.length) {
+      setResults(details);
+    }
+  }, [details]);
 
   const getEditData = (index) => {
     setTab(1);
@@ -156,6 +179,7 @@ function Welcome() {
       defaultValue.salary_disburasable = results[index]?.salary_disburasable;
       defaultValue.registration_charges = results[index]?.registration_charges;
       defaultValue.registration_fees = results[index]?.registration_fees;
+      defaultValue.geo_location = results[index].geo_location;
       reset({ ...defaultValue });
     }
   };
@@ -170,7 +194,20 @@ function Welcome() {
     }
   };
 
-  console.log(results);
+  const openImage = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.click();
+  };
+
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const newCoords = position.coords;
+      setCoords(newCoords);
+      setValue("geo_location", `${newCoords.latitude}, ${newCoords.longitude}`);
+    });
+  };
   return (
     <>
       <Header />
@@ -194,9 +231,49 @@ function Welcome() {
                       }
                       onClick={() => {
                         setTab(1);
+                        setType(1);
+                        setIndex(0);
+                        setSearch("");
+                        setResults([]);
+                        setFile1(null);
+                        setFile2(null);
+                        setFile3(null);
+                        setFile4(null);
+                        setFile5(null);
+                        setFile6(null);
+                        reset({
+                          aadhar: null,
+                          pan_card: null,
+                          bank_name: null,
+                          dob: null,
+                          doj: null,
+                          gender: null,
+                          address: null,
+                          phone_number: null,
+                          esi_number: null,
+                          pf_number: null,
+                          account_number: null,
+                          ifsc_code: null,
+                          employee_name: null,
+                          employee_id: null,
+                          father_or_husband_name: null,
+                          zone: null,
+                          department: null,
+                          address_line2: null,
+                          address_line3: null,
+                          ward: null,
+                          ps: null,
+                          position: null,
+                          reporting_officer: null,
+                          basic_salary: null,
+                          epf: null,
+                          salary_disburasable: null,
+                          registration_charges: null,
+                          registration_fees: null,
+                        });
                       }}
                     >
-                      Add New
+                      {results?.length ? "Edit Form" : "Add New Form"}{" "}
                     </label>
                     <label
                       className={
@@ -227,7 +304,7 @@ function Welcome() {
                               name="employee_name"
                               id="employee_name"
                               {...register("employee_name", {
-                                required: false,
+                                required: true,
                               })}
                             />
                             {errors.employee_name &&
@@ -247,7 +324,7 @@ function Welcome() {
                               name="phone_number"
                               id="phone_number"
                               {...register("phone_number", {
-                                required: false,
+                                required: true,
                                 maxLength: 10,
                                 minLength: 10,
                               })}
@@ -276,21 +353,42 @@ function Welcome() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label> Gender (M/F)</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="gender"
-                              id="gender"
-                              {...register("gender", {
-                                required: false,
-                              })}
-                            />
-                            {errors.gender &&
-                              errors.gender.type === "required" && (
-                                <p className="form-error">
-                                  This field is required
-                                </p>
-                              )}
+
+                            <div className="d-flex">
+                              <div className="form-group mb-0 me-5">
+                                <input
+                                  type="radio"
+                                  id="male"
+                                  value="male"
+                                  name="gender"
+                                  className="me-1"
+                                  {...register("gender", {
+                                    required: "This field is required",
+                                  })}
+                                />
+                                <label htmlFor="male">Male</label>
+                              </div>
+
+                              <div className="form-group mb-0">
+                                <input
+                                  type="radio"
+                                  id="female"
+                                  value="female"
+                                  name="gender"
+                                  className="me-1"
+                                  {...register("gender", {
+                                    required: "This field is required",
+                                  })}
+                                />
+                                <label htmlFor="female">Female</label>
+                              </div>
+                            </div>
+
+                            {errors.gender && (
+                              <p className="form-error">
+                                {errors.gender.message}
+                              </p>
+                            )}
                           </div>
                         </div>
 
@@ -807,23 +905,84 @@ function Welcome() {
                           </div>
                         </div>
 
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <label>Geo Location </label>
+                            <div className="location_mark">
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="geo_location"
+                                id="geo_location"
+                                value={
+                                  coords?.latitude
+                                    ? `${coords?.latitude}, ${coords.longitude}`
+                                    : ""
+                                }
+                                readOnly
+                                {...register("geo_location", {
+                                  required: false,
+                                })}
+                              />
+
+                              {errors.geo_location &&
+                                errors.geo_location.type === "required" && (
+                                  <p className="form-error">
+                                    This field is required
+                                  </p>
+                                )}
+                              <Link to="">
+                                <i
+                                  className="fa fa-map-marker"
+                                  onClick={() => getLocation()}
+                                />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="col-md-6 mb-3">
                           <div className="form-group">
                             <label>Photo Graph </label>
                           </div>
-                          {file1 ||
-                          (results?.length && results[index]?.photo) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.photo
-                                    : file1
-                                    ? URL.createObjectURL(file1)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file1 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="photo"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file1)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file1))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length && results[index]?.photo ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="photo"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>{" "}
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.photo}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(results[index]?.photo)
+                                  }
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -837,6 +996,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="photo"
                             type="file"
@@ -848,19 +1008,45 @@ function Welcome() {
                           <div className="form-group">
                             <label>Aadhar Front </label>
                           </div>
-                          {file2 ||
-                          (results?.length && results[index]?.aadhar_front) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.aadhar_front
-                                    : file2
-                                    ? URL.createObjectURL(file2)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file2 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="aadhar_front"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file2)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file2))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length &&
+                            results[index]?.aadhar_front ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="aadhar_front"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.aadhar_front}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(results[index]?.aadhar_front)
+                                  }
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -874,6 +1060,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="aadhar_front"
                             type="file"
@@ -885,19 +1072,44 @@ function Welcome() {
                           <div className="form-group">
                             <label>Aadhar Back</label>
                           </div>
-                          {file3 ||
-                          (results?.length && results[index]?.aadhar_back) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.aadhar_back
-                                    : file3
-                                    ? URL.createObjectURL(file3)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file3 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="aadhar_back"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file3)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file3))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length && results[index]?.aadhar_back ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="aadhar_back"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.aadhar_back}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(results[index]?.aadhar_back)
+                                  }
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -911,6 +1123,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="aadhar_back"
                             type="file"
@@ -922,19 +1135,44 @@ function Welcome() {
                           <div className="form-group">
                             <label>Pan Card </label>
                           </div>
-                          {file4 ||
-                          (results?.length && results[index]?.pan_photo) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.pan_photo
-                                    : file4
-                                    ? URL.createObjectURL(file4)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file4 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="pan_photo"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file4)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file4))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length && results[index]?.pan_photo ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="pan_photo"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>{" "}
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.pan_photo}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(results[index]?.pan_photo)
+                                  }
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -948,6 +1186,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="pan_photo"
                             type="file"
@@ -959,19 +1198,44 @@ function Welcome() {
                           <div className="form-group">
                             <label>Passbook </label>
                           </div>
-                          {file5 ||
-                          (results?.length && results[index]?.passbook) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.passbook
-                                    : file5
-                                    ? URL.createObjectURL(file5)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file5 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="passbook"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file5)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file5))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length && results[index]?.passbook ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="passbook"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>{" "}
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.passbook}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(results[index]?.passbook)
+                                  }
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -985,6 +1249,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="passbook"
                             type="file"
@@ -996,20 +1261,45 @@ function Welcome() {
                           <div className="form-group">
                             <label>Driving License </label>
                           </div>
-                          {file6 ||
-                          (results?.length &&
-                            results[index]?.driving_license) ? (
-                            <div className="img-wrap">
-                              <img
-                                src={
-                                  results?.length
-                                    ? results[index]?.driving_license
-                                    : file6
-                                    ? URL.createObjectURL(file6)
-                                    : ""
-                                }
-                                alt="Uploaded Image"
-                              />
+
+                          {file6 ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="driving_license"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={URL.createObjectURL(file6)}
+                                  alt="Uploaded Image"
+                                  onClick={() =>
+                                    openImage(URL.createObjectURL(file6))
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : results?.length &&
+                            results[index]?.driving_license ? (
+                            <div className="position-relative">
+                              <label
+                                htmlFor="driving_license"
+                                className="w-100 cloud-upload-alt "
+                              >
+                                {" "}
+                                <i className="fas fa-cloud-upload-alt shadow" />
+                              </label>
+                              <div className="img-wrap">
+                                <img
+                                  src={results[index]?.driving_license}
+                                  onClick={() =>
+                                    openImage(results[index]?.driving_license)
+                                  }
+                                  alt="Uploaded Image"
+                                />
+                              </div>
                             </div>
                           ) : (
                             <label
@@ -1023,6 +1313,7 @@ function Welcome() {
                               </div>
                             </label>
                           )}
+
                           <input
                             id="driving_license"
                             type="file"
@@ -1030,10 +1321,27 @@ function Welcome() {
                           />
                         </div>
 
-                        <div className="col-12">
-                          <button type="submit" className="comman_btn w-fit">
-                            Save
-                          </button>
+                        <div className="col-12  d-flex justify-content-center">
+                          <button
+                            type="submit"
+                            className="comman_btn  my-3 w-50"
+                            disabled={loader}
+                          >
+                            {loader ? (
+                              <div>
+                                <span className="me-2">Wait</span>
+                                <RotatingLines
+                                  strokeColor="white"
+                                  strokeWidth="5"
+                                  animationDuration="0.75"
+                                  width="20"
+                                  visible={true}
+                                />
+                              </div>
+                            ) : (
+                              <span>Save</span>
+                            )}
+                          </button>{" "}
                         </div>
                       </div>
                     </form>
@@ -1045,7 +1353,7 @@ function Welcome() {
                         <label>Search User</label>
                       </div>
                       <div className="d-flex">
-                        <div className="form-group">
+                        <div className="form-group me-3">
                           <input
                             type="radio"
                             id="employeeName"
@@ -1110,36 +1418,46 @@ function Welcome() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {results?.map((user, index) => (
-                                    <tr key={user._id}>
-                                      <td>{index + 1}</td>
-                                      <td>{user.employee_name}</td>
-                                      <td>{user.phone_number}</td>
-                                      <td>{user.account_number}</td>
-                                      <td>{user.position}</td>
-                                      <td>{user.zone}</td>
-                                      <td>
-                                        <div className="d-flex">
-                                          <Link
-                                            to=""
-                                            className="Table_btn me-2"
-                                            onClick={() => {
-                                              getEditData(index);
-                                            }}
-                                          >
-                                            <i className="fa fa-edit" />
-                                          </Link>
-                                          <Link
-                                            to=""
-                                            className="Table_btn"
-                                            onClick={() => deleteEmp(user._id)}
-                                          >
-                                            <i className="fa fa-trash" />
-                                          </Link>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {results?.length ? (
+                                    results?.map((user, index) => (
+                                      <tr key={user._id}>
+                                        <td>{index + 1}</td>
+                                        <td>{user.employee_name}</td>
+                                        <td>{user.phone_number}</td>
+                                        <td>{user.account_number}</td>
+                                        <td>{user.position}</td>
+                                        <td>{user.zone}</td>
+                                        <td>
+                                          <div className="d-flex">
+                                            <Link
+                                              to=""
+                                              className="Table_btn me-2"
+                                              onClick={() => {
+                                                getEditData(index);
+                                              }}
+                                            >
+                                              <i className="fa fa-edit" />
+                                            </Link>
+                                            <Link
+                                              to=""
+                                              className="Table_btn"
+                                              onClick={() =>
+                                                deleteEmp(user._id)
+                                              }
+                                            >
+                                              <i className="fa fa-trash" />
+                                            </Link>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <div className="form-design">
+                                      <div className="form-group mb-0 ">
+                                        <label>No Data Found</label>
+                                      </div>
+                                    </div>
+                                  )}
                                 </tbody>
                               </table>
                             </div>

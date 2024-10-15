@@ -31,7 +31,6 @@ function Login() {
     setLoader(true);
     const response = await login(data);
     if (!response.error) {
-      console.log(response);
       localStorage.setItem("token-user", response.results.token);
       navigate("/welcome");
       showAlert(alert, response.message, { timeout: 3000 });
