@@ -907,7 +907,7 @@ function Welcome() {
 
                         <div className="col-md-12">
                           <div className="form-group">
-                            <label>Geo Location </label>
+                            <label>Geo Location (Latitude, Longitude) </label>
                             <div className="location_mark">
                               <input
                                 type="text"
@@ -919,7 +919,6 @@ function Welcome() {
                                     ? `${coords?.latitude}, ${coords.longitude}`
                                     : ""
                                 }
-                                readOnly
                                 {...register("geo_location", {
                                   required: false,
                                 })}
@@ -940,6 +939,10 @@ function Welcome() {
                             </div>
                           </div>
                         </div>
+
+                        <p className="form-error">
+                          Files Must be Upto 300KB Max
+                        </p>
 
                         <div className="col-md-6 mb-3">
                           <div className="form-group">
