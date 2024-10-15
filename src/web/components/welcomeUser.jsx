@@ -84,7 +84,7 @@ function Welcome() {
       showAlert(alert, response.message, { timeout: 3000 });
     }
   };
-  console.log(coords);
+
   const onSubmit = async (data) => {
     setLoader(true);
     if (file1 || file2 || file3 || file4 || file5 || file6) {
