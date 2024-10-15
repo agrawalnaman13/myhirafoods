@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./commonComponent/header";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
@@ -23,6 +23,7 @@ function Welcome() {
   const [file5, setFile5] = useState(null);
   const [file6, setFile6] = useState(null);
   const [search, setSearch] = useState("");
+  const [coords, setCoords] = useState({});
 
   const {
     register,
@@ -68,7 +69,7 @@ function Welcome() {
       showAlert(alert, response.message, { timeout: 3000 });
     }
   };
-
+  console.log(coords);
   const onSubmit = async (data) => {
     if (file1 || file2 || file3 || file4 || file5 || file6) {
       const files = await imageUpload();
@@ -156,6 +157,7 @@ function Welcome() {
       defaultValue.salary_disburasable = results[index]?.salary_disburasable;
       defaultValue.registration_charges = results[index]?.registration_charges;
       defaultValue.registration_fees = results[index]?.registration_fees;
+      defaultValue.geo_location = results[index].geo_location;
       reset({ ...defaultValue });
     }
   };
@@ -176,6 +178,13 @@ function Welcome() {
     a.target = "_blank";
     a.click();
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCoords(position.coords);
+      console.log(position.coords);
+    });
+  }, []);
 
   console.log(results);
   return (
@@ -294,9 +303,7 @@ function Welcome() {
                                   required: false,
                                 })}
                               />
-                              <label htmlFor="mobileNumber">
-                                Male
-                              </label>
+                              <label htmlFor="mobileNumber">Male</label>
                             </div>
 
                             <div className="form-group me-3">
@@ -310,9 +317,7 @@ function Welcome() {
                                   required: false,
                                 })}
                               />
-                              <label htmlFor="accountNumber">
-                                Female
-                              </label>
+                              <label htmlFor="accountNumber">Female</label>
                             </div>
                             {/* <input
                               type="text"
@@ -844,7 +849,29 @@ function Welcome() {
                               )}
                           </div>
                         </div>
-
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Geo Location </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="geo_location"
+                              id="geo_location"
+                              value={`${coords?.latitude}, ${coords.longitude}`}
+                              disabled
+                              {...register("geo_location", {
+                                required: false,
+                              })}
+                            />
+                            {errors.geo_location &&
+                              errors.geo_location.type === "required" && (
+                                <p className="form-error">
+                                  This field is required
+                                </p>
+                              )}
+                          </div>
+                        </div>
+                        <div className="col-md-6"></div>
                         <div className="col-md-6 mb-3">
                           <div className="form-group">
                             <label>Photo Graph </label>
