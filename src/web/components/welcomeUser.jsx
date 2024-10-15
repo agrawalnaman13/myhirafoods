@@ -38,6 +38,10 @@ function Welcome() {
 
   const handleImageUpload = (event, type) => {
     const selectedFile = event.target.files[0];
+    if (selectedFile && selectedFile.size > 300 * 1024) {
+      showAlert(alert, "Minimum File size should be 300KB.", { timeout: 3000 });
+      return;
+    }
     if (type === 1) {
       setFile1(selectedFile);
     } else if (type === 2) {
@@ -872,6 +876,7 @@ function Welcome() {
                           </div>
                         </div>
                         <div className="col-md-6"></div>
+                        <p className="form-error">Files Must be Upto 300KB Max</p>
                         <div className="col-md-6 mb-3">
                           <div className="form-group">
                             <label>Photo Graph </label>
