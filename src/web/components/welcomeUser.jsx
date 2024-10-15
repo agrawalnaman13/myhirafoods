@@ -170,6 +170,13 @@ function Welcome() {
     }
   };
 
+  const openImage = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.click();
+  };
+
   console.log(results);
   return (
     <>
@@ -227,7 +234,7 @@ function Welcome() {
                               name="employee_name"
                               id="employee_name"
                               {...register("employee_name", {
-                                required: false,
+                                required: true,
                               })}
                             />
                             {errors.employee_name &&
@@ -247,7 +254,7 @@ function Welcome() {
                               name="phone_number"
                               id="phone_number"
                               {...register("phone_number", {
-                                required: false,
+                                required: true,
                                 maxLength: 10,
                                 minLength: 10,
                               })}
@@ -276,7 +283,38 @@ function Welcome() {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label> Gender (M/F)</label>
-                            <input
+                            <div className="form-group me-3">
+                              <input
+                                type="radio"
+                                id="mobileNumber"
+                                name="gender"
+                                defaultValue="M"
+                                className="me-1"
+                                {...register("gender", {
+                                  required: false,
+                                })}
+                              />
+                              <label htmlFor="mobileNumber">
+                                Male
+                              </label>
+                            </div>
+
+                            <div className="form-group me-3">
+                              <input
+                                type="radio"
+                                id="accountNumber"
+                                name="gender"
+                                defaultValue="F"
+                                className="me-1"
+                                {...register("gender", {
+                                  required: false,
+                                })}
+                              />
+                              <label htmlFor="accountNumber">
+                                Female
+                              </label>
+                            </div>
+                            {/* <input
                               type="text"
                               className="form-control"
                               name="gender"
@@ -284,7 +322,7 @@ function Welcome() {
                               {...register("gender", {
                                 required: false,
                               })}
-                            />
+                            /> */}
                             {errors.gender &&
                               errors.gender.type === "required" && (
                                 <p className="form-error">
@@ -816,11 +854,20 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.photo
-                                    : file1
+                                  file1
                                     ? URL.createObjectURL(file1)
+                                    : results?.length
+                                    ? results[index]?.photo
                                     : ""
+                                }
+                                onClick={() =>
+                                  openImage(
+                                    file1
+                                      ? URL.createObjectURL(file1)
+                                      : results?.length
+                                      ? results[index]?.photo
+                                      : ""
+                                  )
                                 }
                                 alt="Uploaded Image"
                               />
@@ -853,11 +900,20 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.aadhar_front
-                                    : file2
+                                  file2
                                     ? URL.createObjectURL(file2)
+                                    : results?.length
+                                    ? results[index]?.aadhar_front
                                     : ""
+                                }
+                                onClick={() =>
+                                  openImage(
+                                    file2
+                                      ? URL.createObjectURL(file2)
+                                      : results?.length
+                                      ? results[index]?.aadhar_front
+                                      : ""
+                                  )
                                 }
                                 alt="Uploaded Image"
                               />
@@ -890,11 +946,20 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.aadhar_back
-                                    : file3
+                                  file3
                                     ? URL.createObjectURL(file3)
+                                    : results?.length
+                                    ? results[index]?.aadhar_back
                                     : ""
+                                }
+                                onClick={() =>
+                                  openImage(
+                                    file3
+                                      ? URL.createObjectURL(file3)
+                                      : results?.length
+                                      ? results[index]?.aadhar_back
+                                      : ""
+                                  )
                                 }
                                 alt="Uploaded Image"
                               />
@@ -927,10 +992,10 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.pan_photo
-                                    : file4
+                                  file4
                                     ? URL.createObjectURL(file4)
+                                    : results?.length
+                                    ? results[index]?.pan_photo
                                     : ""
                                 }
                                 alt="Uploaded Image"
@@ -964,11 +1029,20 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.passbook
-                                    : file5
+                                  file5
                                     ? URL.createObjectURL(file5)
+                                    : results?.length
+                                    ? results[index]?.passbook
                                     : ""
+                                }
+                                onClick={() =>
+                                  openImage(
+                                    file5
+                                      ? URL.createObjectURL(file5)
+                                      : results?.length
+                                      ? results[index]?.passbook
+                                      : ""
+                                  )
                                 }
                                 alt="Uploaded Image"
                               />
@@ -1002,11 +1076,20 @@ function Welcome() {
                             <div className="img-wrap">
                               <img
                                 src={
-                                  results?.length
-                                    ? results[index]?.driving_license
-                                    : file6
+                                  file6
                                     ? URL.createObjectURL(file6)
+                                    : results?.length
+                                    ? results[index]?.driving_license
                                     : ""
+                                }
+                                onClick={() =>
+                                  openImage(
+                                    file6
+                                      ? URL.createObjectURL(file6)
+                                      : results?.length
+                                      ? results[index]?.driving_license
+                                      : ""
+                                  )
                                 }
                                 alt="Uploaded Image"
                               />
