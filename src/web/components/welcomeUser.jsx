@@ -1413,6 +1413,7 @@ function Welcome() {
                                   <tr>
                                     <th>S.No.</th>
                                     <th>Employee Name</th>
+                                    <th>Father's/Husband Name</th>
                                     <th>Mobile</th>
                                     <th>Account Number</th>
                                     <th>Position</th>
@@ -1426,6 +1427,7 @@ function Welcome() {
                                       <tr key={user._id}>
                                         <td>{index + 1}</td>
                                         <td>{user.employee_name}</td>
+                                        <td>{user.father_or_husband_name}</td>
                                         <td>{user.phone_number}</td>
                                         <td>{user.account_number}</td>
                                         <td>{user.position}</td>
